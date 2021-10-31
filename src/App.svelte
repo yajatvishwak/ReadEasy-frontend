@@ -7,6 +7,7 @@
 <body>
   <Router {routes} />
 </body>
+//Hi
 
 <style lang="postcss" global>
   @tailwind base;
