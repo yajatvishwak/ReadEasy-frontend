@@ -1,5 +1,27 @@
 <script>
   import { Jumper } from "svelte-loading-spinners";
+  import { onMount } from "svelte";
+  import { location } from "svelte-spa-router";
+  import { get } from "svelte/store";
+  let courseID = get(location).substr(get(location).lastIndexOf("/") + 1);
+  let courseTitle = "";
+  let text =
+    "Hey guys welcome back to my youtube channel please like and subscribe".split(
+      " "
+    );
+  onMount(() => {
+    fetch(`http://localhost:5000/course/${courseID}`, {
+      method: "GET",
+    })
+      .then(function (res) {
+        return res.json();
+      })
+      .then(function (data) {
+        console.log(data);
+        courseTitle = data.course.title;
+        text = data.course.content.split(" ");
+      });
+  });
   let fontValue = 50;
   let selectedText = 0;
   let marginValue = 10;
@@ -10,10 +32,6 @@
   let imageURL = "";
 
   let readEachWordOut = false;
-  let text =
-    "Hey guys welcome back to my youtube channel please like and subscribe".split(
-      " "
-    );
 
   function handleKeydown(event) {
     console.log(event.key);
@@ -142,8 +160,11 @@
   </div>
   <div class="col-start-3 bg-gray-700 pt-16 px-6">
     <div class="fixed">
+      <div>Course name</div>
+      <div class="text-4xl font-bold mb-10">{courseTitle}</div>
+      <hr class="mb-10" />
       <div class="flex items-center justify-between">
-        <span class="text-3xl font-bold ">Options</span>
+        <span class="text-3xl opacity-50 font-bold ">Options</span>
       </div>
       <div class="w-full mt-7">
         Font Size
@@ -188,7 +209,7 @@
       </div>
       <div
         on:click={() => sayWord()}
-        class="w-full p-4 m-5 hover:text-black hover:bg-white transition-all mx-0 rounded-lg border"
+        class="w-full p-4 m-5 hover:text-black cursor-pointer hover:bg-white transition-all mx-0 rounded-lg border"
       >
         <i class="fas fa-volume-up mx-5" />
         What is this word?
@@ -196,7 +217,7 @@
 
       <div
         on:click={() => (readEachWordOut = !readEachWordOut)}
-        class="w-full  p-4 m-5 hover:text-black hover:bg-white transition-all mx-0 rounded-lg border {readEachWordOut
+        class="w-full  p-4 m-5 hover:text-black cursor-pointer hover:bg-white transition-all mx-0 rounded-lg border {readEachWordOut
           ? 'bg-white text-black'
           : ''}"
       >
@@ -205,14 +226,14 @@
       </div>
       <div
         on:click={readFull}
-        class="w-full p-4 m-5 hover:text-black hover:bg-white transition-all mx-0 rounded-lg border"
+        class="w-full p-4 m-5 hover:text-black cursor-pointer hover:bg-white transition-all mx-0 rounded-lg border"
       >
         <i class="fas fa-volume-up mx-5" />
         Read out everything
       </div>
       <div
         on:click={spellthis}
-        class="w-full p-4 m-5 hover:text-black hover:bg-white transition-all mx-0 rounded-lg border"
+        class="w-full p-4 m-5 hover:text-black cursor-pointer hover:bg-white transition-all mx-0 rounded-lg border"
       >
         <i class="fas fa-volume-up mx-5" />
         Spell highlighted word

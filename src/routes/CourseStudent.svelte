@@ -13,6 +13,7 @@
         console.log(data);
         // TODO
         courses = data.courses;
+        console.log(courses);
       });
   });
 </script>

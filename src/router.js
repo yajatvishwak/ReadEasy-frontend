@@ -2,14 +2,14 @@ import Login from "./routes/Login.svelte";
 import Home from "./routes/Home.svelte";
 import NotFound from "./routes/NotFound.svelte";
 import CourseStudent from "./routes/CourseStudent.svelte";
+import CourseCreate from "./routes/CourseCreate.svelte";
 
 const routes = {
   // Exact path
-
   "/login": Login,
-
   "/student/course": CourseStudent,
-  "/:id": Home,
+  "/teacher/create": CourseCreate,
+  "/course/:id": Home,
 
   //   // Using named parameters, with last being optional
   //   "/author/:first/:last?": Author,
