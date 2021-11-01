@@ -6,7 +6,7 @@
   let highlighted = -1;
   let isVisualOpen = false;
   let loading = false;
-  let speechRate = 1;
+  let speechRate = 5;
   let imageURL = "";
 
   let readEachWordOut = false;
@@ -23,7 +23,7 @@
       selectedText++;
       if (readEachWordOut) {
         let utterance = new SpeechSynthesisUtterance(text[selectedText]);
-        utterance.rate = speechRate;
+        utterance.rate = speechRate * 0.1;
         speechSynthesis.speak(utterance);
       }
       document
@@ -70,18 +70,18 @@
   }
   function sayWord() {
     let utterance = new SpeechSynthesisUtterance(text[highlighted]);
-    utterance.rate = speechRate;
+    utterance.rate = speechRate * 0.1;
     speechSynthesis.speak(utterance);
   }
   function readFull() {
     let utterance = new SpeechSynthesisUtterance(text.join(" "));
-    utterance.rate = speechRate;
+    utterance.rate = speechRate * 0.1;
     speechSynthesis.speak(utterance);
   }
   function spellthis() {
     for (let i = 0; i < text[highlighted].length; i++) {
       let utterance = new SpeechSynthesisUtterance(text[highlighted].charAt(i));
-      utterance.rate = speechRate;
+      utterance.rate = speechRate * 0.1;
       speechSynthesis.speak(utterance);
     }
   }
@@ -101,7 +101,7 @@
     {#if loading}
       <Jumper size="60" color="#FF3E00" unit="px" duration="1s" />
     {:else}
-      <img src={imageURL} class="rounded-lg max-w-xl" alt="" />
+      <img src={imageURL} class=" rounded-lg max-w-xl" alt="" />
     {/if}
 
     <div class="text-3xl">{text[highlighted]}</div>
@@ -171,12 +171,13 @@
         Speech Rate
         <input
           type="range"
-          min="0.5"
-          max="2"
+          min="5"
+          max="10"
           bind:value={speechRate}
           class="w-full"
           id="myRange"
         />
+        {speechRate}
       </div>
       <div
         class="w-full p-4 m-5 cursor-pointer hover:text-black hover:bg-white transition-all mx-0 rounded-lg border"
