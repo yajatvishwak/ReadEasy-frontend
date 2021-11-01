@@ -6,13 +6,13 @@ import CourseStudent from "./routes/CourseStudent.svelte";
 
 const routes = {
   // Exact path
-  "/": Home,
 
   "/SignUp": SignUp,
 
   "/login": Login,
 
   "/student/course": CourseStudent,
+  "/:id": Home,
 
   //   // Using named parameters, with last being optional
   //   "/author/:first/:last?": Author,
