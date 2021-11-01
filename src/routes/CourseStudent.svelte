@@ -18,7 +18,7 @@
         </div>
         <div class="grid grid-cols-3 gap-7 mt-10">
             <div
-                class="p-5 hover:bg-white  hover:text-black hover:border-none transition-all cursor-pointer rounded-lg border"
+                class="p-5 hover:bg-white  hover:text-black hover:border-none transition-all  cursor-pointer rounded-lg border"
             >
                 this is a card
             </div>

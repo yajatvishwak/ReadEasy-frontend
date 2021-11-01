@@ -3,20 +3,31 @@
     let selectedText = 0;
     let marginValue = 10;
     let highlighted = -1;
+    let isVisualOpen = false;
+    const headers = {
+        authorization:
+            "563492ad6f917000010000014dab6ad49fef4b1db8b62449c10249ce",
+    };
+    let imageURL = "";
+
+    let readEachWordOut = false;
     let text =
-        "Aa chal bhaag, chalen kahin aa Jahan raat, katein wahi aa Ek saath, palein halaat Aa chal bhaag, chalen kahin aa Jahan raat, katein wahi aa Ek saath, palein halaat How could you leave-leave-leave Dhin tirikit dha-dha-dha How could you leave Din tere bin na How could you leave-leave-leave Dhin tirikit dha-dha-dha How could you leave-leave-leave Din tere bin na".split(
+        "Hey guys welcome back to my youtube channel please like and subscribe  ".split(
             " "
         );
+
     function handleKeydown(event) {
         console.log(event.key);
         let key = event.key;
         if (key === "Enter") {
             if (selectedText === text.length - 1) return;
             selectedText++;
-
-            // document.getElementById("scrollcontainer").scrollLeft += document
-            //     .getElementsByClassName("spanbro")
-            //     [selectedText].getBoundingClientRect().width;
+            if (readEachWordOut) {
+                let utterance = new SpeechSynthesisUtterance(
+                    text[selectedText]
+                );
+                speechSynthesis.speak(utterance);
+            }
             document
                 .getElementById("highlighted")
                 .scrollIntoView({ behavior: "smooth", block: "center" });
@@ -30,14 +41,62 @@
     function wordChosen(index) {
         if (highlighted === index) return (highlighted = -1);
         highlighted = index;
-
         // console.log(highlighted);
+    }
+
+    function onvisualitclicked() {
+        let highlightedWord = text[highlighted];
+        console.log("showing images for " + highlightedWord);
+        // Send a POST request
+
+        fetch("https://api.pexels.com/v1/search?query=nature&per_page=1", {
+            headers: {
+                authorization:
+                    "563492ad6f917000010000014dab6ad49fef4b1db8b62449c10249ce",
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                imageURL = data.photos[0].src.small;
+            });
+        // axios.get("https://api.pexels.com/v1/search?query=nature&per_page=1", {
+        //     headers: {
+        //         authorization:
+        //             "563492ad6f917000010000014dab6ad49fef4b1db8b62449c10249ce",
+        //     },
+        // });
+
+        isVisualOpen = true;
+    }
+    function sayWord() {
+        let utterance = new SpeechSynthesisUtterance(text[highlighted]);
+        speechSynthesis.speak(utterance);
+    }
+    function readFull() {
+        let utterance = new SpeechSynthesisUtterance(text.join(" "));
+        speechSynthesis.speak(utterance);
     }
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
 
-<section class="grid grid-cols-3 bg-gray-800 h-screen text-white p ">
+<div
+    class=" bg-white {isVisualOpen
+        ? ''
+        : 'hidden'} shadow-lg  z-10  p-5 rounded-lg absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border"
+>
+    <div class="text-right" on:click={() => (isVisualOpen = false)}>
+        <i class="fas fa-times" />
+    </div>
+    <div class="p-3">
+        <img src={imageURL} class="rounded-lg" alt="" />
+    </div>
+</div>
+
+<section
+    class="grid grid-cols-3 {isVisualOpen ? 'blur-sm' : ''}
+ bg-gray-800 h-screen text-white p "
+>
     <div
         id="scrollcontainer"
         class="col-start-1 flex my-auto p-16 bg-white text-black w-full col-span-2  flex-wrap "
@@ -48,7 +107,7 @@
                     on:click={() => wordChosen(index)}
                     id="highlighted"
                     class="spanbro bg-black text-white p-2 cursor-pointer"
-                    style=" margin:{marginValue}px;font-size: {fontValue}px;"
+                    style="margin:{marginValue}px;font-size: {fontValue}px;"
                     >{word}</span
                 >
             {:else if highlighted === index}
@@ -70,7 +129,7 @@
         {/each}
     </div>
     <div class="col-start-3 bg-gray-700 pt-16 px-6">
-        <div class="fixed ">
+        <div class="fixed">
             <div class="flex items-center justify-between">
                 <span class="text-3xl font-bold ">Options</span>
             </div>
@@ -97,16 +156,35 @@
                 />
             </div>
             <div
-                class="w-full p-4 m-5 hover:text-black hover:bg-white transition-all mx-0 rounded-lg border"
+                class="w-full p-4 m-5 cursor-pointer hover:text-black hover:bg-white transition-all mx-0 rounded-lg border"
+                on:click={onvisualitclicked}
             >
                 <i class="fas fa-glasses px-5 " />
                 Visualize it
             </div>
             <div
+                on:click={() => sayWord()}
                 class="w-full p-4 m-5 hover:text-black hover:bg-white transition-all mx-0 rounded-lg border"
             >
                 <i class="fas fa-volume-up mx-5" />
-                Say It Out Loud
+                What is this word?
+            </div>
+
+            <div
+                on:click={() => (readEachWordOut = !readEachWordOut)}
+                class="w-full  p-4 m-5 hover:text-black hover:bg-white transition-all mx-0 rounded-lg border {readEachWordOut
+                    ? 'bg-white text-black'
+                    : ''}"
+            >
+                <i class="fas fa-volume-up mx-5" />
+                Read each word out
+            </div>
+            <div
+                on:click={readFull}
+                class="w-full p-4 m-5 hover:text-black hover:bg-white transition-all mx-0 rounded-lg border"
+            >
+                <i class="fas fa-volume-up mx-5" />
+                Read out everything
             </div>
         </div>
     </div>
