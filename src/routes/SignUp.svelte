@@ -44,35 +44,37 @@
 
                 <div class="mt-10">
                     <form action="#">
-                        <div class="flex flex-col mb-6">
-                            <label
-                                for="name"
-                                class="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"
-                                >Name:</label
-                            >
-                            <div class="relative">
-                                <div
-                                    class="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400"
-                                >
-                                    <img
-                                        class="h-7 w-7"
-                                        src="./assets/name-icon.png"
-                                        alt=""
-                                    />
-                                </div>
-
-                                <input
-                                    id="name"
-                                    type="name"
-                                    name="name"
-                                    class="text-sm text-black sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
-                                    placeholder="Name"
-                                />
-                            </div>
-                        </div>
+                        
 
                         <div class="mt-10">
                             <form on:submit={signup}>
+                                <div class="flex flex-col mb-6">
+                                    <label
+                                        for="name"
+                                        class="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"
+                                        >Name:</label
+                                    >
+                                    <div class="relative">
+                                        <div
+                                            class="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400"
+                                        >
+                                            <img
+                                                class="h-7 w-7"
+                                                src="./assets/name-icon.png"
+                                                alt=""
+                                            />
+                                        </div>
+        
+                                        <input
+                                        bind:value={username}
+                                            id="username"
+                                            type="name"
+                                            name="username"
+                                            class="text-sm text-black sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
+                                            placeholder="Name"
+                                        />
+                                    </div>
+                                </div>
                                 <div class="flex flex-col mb-6">
                                     <label
                                         for="email"
