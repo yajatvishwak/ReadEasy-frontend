@@ -72,7 +72,7 @@
     <div class="col-start-3 bg-gray-700 pt-16 px-6">
         <div class="fixed ">
             <div class="flex items-center justify-between">
-                <span class="text-3xl font-bold ">Options</span>
+                <span class="text-3xl font-bold ">HELLO Options</span>
             </div>
             <div class="w-full mt-7">
                 Font Size
