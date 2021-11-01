@@ -1,3 +1,35 @@
+<script>
+    let email = "";
+    let password = "";
+    let username="";
+    let role="";
+
+    function signup(event) {
+      event.preventDefault();
+      const payload = JSON.stringify({
+        email: email,
+        password: password,
+        username:username,
+        role:role
+      });
+      console.log(payload);
+      fetch("http://localhost:5000/signup", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: payload,
+      })
+        .then(function (res) {
+          return res.json();
+        })
+        .then(function (data) {
+          console.log(data);
+          
+        });
+    }
+  </script>
+
 <body>
     <section class="text-white">
         <div class="mt-40  flex flex-col items-left bg-white">
@@ -40,7 +72,7 @@
                         </div>
 
                         <div class="mt-10">
-                            <form action="#">
+                            <form on:submit={signup}>
                                 <div class="flex flex-col mb-6">
                                     <label
                                         for="email"
@@ -67,6 +99,7 @@
                                         </div>
 
                                         <input
+                                            bind:value={email}
                                             id="email"
                                             type="email"
                                             name="email"
@@ -103,6 +136,7 @@
                                         </div>
 
                                         <input
+                                        bind:value={password}
                                             id="password"
                                             type="password"
                                             name="password"
@@ -119,14 +153,17 @@
                                     >
 
                                     <div class="">
+                                        
+                                        
                                         <label
                                             class="flex items-center justify-center ml-5 mr-5 focus:outline-none text-black text-sm sm:text-base  rounded  w-full transition duration-150 ease-in"
                                         >
                                             <input
+                                            bind:group={role}
                                                 type="radio"
                                                 class="form-radio"
                                                 name="role"
-                                                value="teacher"
+                                                value={"teacher"}
                                             />
                                             <span class="ml-2">Teacher</span>
                                         </label>
@@ -134,10 +171,11 @@
                                             class="flex items-center justify-center ml-5 mr-5 focus:outline-none text-black text-sm sm:text-base  rounded w-full transition duration-150 ease-in"
                                         >
                                             <input
+                                            bind:group={role}
                                                 type="radio"
                                                 class="form-radio"
                                                 name="role"
-                                                value="student"
+                                                value={"student"}
                                             />
                                             <span class="ml-2">Student</span>
                                         </label>
