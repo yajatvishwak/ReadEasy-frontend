@@ -7,12 +7,9 @@ import CourseCreate from "./routes/CourseCreate.svelte";
 
 const routes = {
   // Exact path
-<<<<<<< HEAD
-=======
 
   "/SignUp": SignUp,
 
->>>>>>> df50370e503f7daad4af3d211ec317f95d3de0eb
   "/login": Login,
   "/student/course": CourseStudent,
   "/teacher/create": CourseCreate,

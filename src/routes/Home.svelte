@@ -1,14 +1,16 @@
 <script>
   import { Jumper } from "svelte-loading-spinners";
   import { onMount } from "svelte";
+  import speechUtteranceChunker from "./chucker";
   import { location } from "svelte-spa-router";
   import { get } from "svelte/store";
   let courseID = get(location).substr(get(location).lastIndexOf("/") + 1);
   let courseTitle = "";
   let text =
-    "Hey guys welcome back to my youtube channel please like and subscribe".split(
+    "Hey guys welcome back to my youtube channel please like and subscribeasdasdasdawfgwegwethsertjstrdfhsertjhsdfgh".split(
       " "
     );
+
   onMount(() => {
     fetch(`http://localhost:5000/course/${courseID}`, {
       method: "GET",
@@ -41,8 +43,9 @@
       selectedText++;
       if (readEachWordOut) {
         let utterance = new SpeechSynthesisUtterance(text[selectedText]);
-        utterance.rate = speechRate * 0.1;
-        speechSynthesis.speak(utterance);
+
+        speechUtteranceChunker(utterance, speechRate);
+        //speechSynthesis.speak(utterance);
       }
       document
         .getElementById("highlighted")
@@ -89,12 +92,17 @@
   function sayWord() {
     let utterance = new SpeechSynthesisUtterance(text[highlighted]);
     utterance.rate = speechRate * 0.1;
-    speechSynthesis.speak(utterance);
+    speechSynthesis.cancel();
+
+    speechUtteranceChunker(utterance, speechRate);
+    //speechSynthesis.speak(utterance);
   }
   function readFull() {
     let utterance = new SpeechSynthesisUtterance(text.join(" "));
     utterance.rate = speechRate * 0.1;
-    speechSynthesis.speak(utterance);
+    speechSynthesis.cancel();
+    speechUtteranceChunker(utterance, speechRate);
+    //speechSynthesis.speak(utterance);
   }
   function spellthis() {
     for (let i = 0; i < text[highlighted].length; i++) {
@@ -139,14 +147,14 @@
         <span
           on:click={() => wordChosen(index)}
           id="highlighted"
-          class="spanbro bg-black text-white p-2 cursor-pointer"
+          class="spanbro bg-black rounded-3xl text-white p-2 cursor-pointer"
           style="margin:{marginValue}px;font-size: {fontValue}px;">{word}</span
         >
       {:else if highlighted === index}
         <span
           on:click={() => wordChosen(index)}
           id="highlighted"
-          class="spanbro bg-yellow-300 text-black p-2 cursor-pointer"
+          class="spanbro bg-yellow-300  rounded-3xl text-black p-2 cursor-pointer"
           style=" margin:{marginValue}px;font-size: {fontValue}px;">{word}</span
         >
       {:else}
@@ -241,3 +249,13 @@
     </div>
   </div>
 </section>
+
+<style>
+  @font-face {
+    font-family: od;
+    src: url("assets/1.otf") format("opentype");
+  }
+  section {
+    font-family: "od", serif;
+  }
+</style>
