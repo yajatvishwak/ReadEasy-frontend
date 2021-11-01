@@ -1,3 +1,4 @@
+import SignUp from "./routes/SignUp.svelte";
 import Login from "./routes/Login.svelte";
 import Home from "./routes/Home.svelte";
 import NotFound from "./routes/NotFound.svelte";
@@ -6,6 +7,8 @@ import CourseStudent from "./routes/CourseStudent.svelte";
 const routes = {
   // Exact path
   "/": Home,
+
+  "/SignUp": SignUp,
 
   "/login": Login,
 
