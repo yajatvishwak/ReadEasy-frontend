@@ -1,4 +1,28 @@
 <script>
+  let email = "";
+  let password = "";
+  function login(event) {
+    event.preventDefault();
+    const payload = JSON.stringify({
+      email: email,
+      password: password,
+    });
+    console.log(payload);
+    fetch("http://localhost:5000/login", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: payload,
+    })
+      .then(function (res) {
+        return res.json();
+      })
+      .then(function (data) {
+        console.log(data);
+        //TODO;
+      });
+  }
 </script>
 
 <body class="overflow-y-hidden">
@@ -14,7 +38,7 @@
         </div>
 
         <div class="mt-10">
-          <form action="#">
+          <form on:submit={login}>
             <div class="flex flex-col mb-6">
               <label
                 for="email"
@@ -41,6 +65,7 @@
                 </div>
 
                 <input
+                  bind:value={email}
                   id="email"
                   type="email"
                   name="email"
@@ -77,6 +102,7 @@
                 </div>
 
                 <input
+                  bind:value={password}
                   id="password"
                   type="password"
                   name="password"
