@@ -1,4 +1,6 @@
 <script>
+  import { push, replace } from "svelte-spa-router";
+
   let titleSubmitted = false;
   let title = "";
   let titleID = "";
@@ -45,7 +47,10 @@
     "
   >
     <div class="m-5">logo</div>
-    <div class="mt-12 w-full  p-4 text-center ">
+    <div
+      on:click={() => replace("/teacher/course")}
+      class="mt-12 w-full  p-4 text-center "
+    >
       <i class="fas fa-home" />
     </div>
     <div class=" w-full  p-4 text-center border-r bg-gray-700">
