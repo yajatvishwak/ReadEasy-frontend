@@ -12,7 +12,7 @@
     );
 
   onMount(() => {
-    fetch(`http://localhost:5000/course/${courseID}`, {
+    fetch(`http://192.168.113.173:5000/course/${courseID}`, {
       method: "GET",
     })
       .then(function (res) {

@@ -8,7 +8,7 @@
       password: password,
     });
     console.log(payload);
-    fetch("http://localhost:5000/login", {
+    fetch("http://192.168.113.173:5000/login", {
       headers: {
         "Content-Type": "application/json",
       },

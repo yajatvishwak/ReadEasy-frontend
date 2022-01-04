@@ -6,7 +6,7 @@
   let titleID = "";
   let files;
   function nextClicked() {
-    fetch("http://localhost:5000/add-course", {
+    fetch("http://192.168.113.173:5000/add-course", {
       headers: {
         "Content-Type": "application/json",
       },
@@ -25,7 +25,7 @@
     const formData = new FormData();
     console.log(files[0]);
     formData.append("file", files[0]);
-    fetch(`http://localhost:5000/upload/${titleID}`, {
+    fetch(`http://192.168.113.173:5000/upload/${titleID}`, {
       method: "POST",
       body: formData,
     })

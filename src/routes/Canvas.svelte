@@ -1,9 +1,9 @@
 <script>
   import { onMount } from "svelte";
-  import Tesseract from "tesseract.js";
+  import { claim_svg_element } from "svelte/internal";
   import { picStoreActions } from "./store";
-  export let width = 500;
-  export let height = 500;
+  export let width = 350;
+  export let height = 350;
 
   export let canvas;
   let wordList = ["Hare", "Rabbit", "Cow", "Slow"];
@@ -21,48 +21,96 @@
     ctx.fillStyle = "#edeae6";
     ctx.fillRect(0, 0, width, height);
     ctx.lineWidth = 4;
+    ctx.lineCap = "round";
   });
   function convertCanvasToImage() {
     let image = new Image();
     image.src = canvas.toDataURL();
     return image;
   }
-  function checkLetter() {
-    //console.log(canvas.toDataURL());
-    Tesseract.recognize(canvas.toDataURL(), "eng", {
-      logger: (m) => console.log(m),
-    }).then(({ data: { text } }) => {
-      let char = wordList[pointer].split("")[pointerLetter];
-      console.log(text, char);
-      console.log(text.toLowerCase().trim() === char.toLowerCase().trim());
-      if (text.toLowerCase().trim() === char.toLowerCase().trim()) {
-        correct++;
-      } else {
-        wrong++;
-      }
+  // function checkLetter() {
+  //   //console.log(canvas.toDataURL());
+  //   Tesseract.recognize(canvas.toDataURL(), "eng", {
+  //     logger: (m) => console.log(m),
+  //   }).then(({ data: { text } }) => {
+  //     let char = wordList[pointer].split("")[pointerLetter];
+  //     console.log(text, char);
+  //     console.log(text.toLowerCase().trim() === char.toLowerCase().trim());
+  //     if (text.toLowerCase().trim() === char.toLowerCase().trim()) {
+  //       correct++;
+  //     } else {
+  //       wrong++;
+  //     }
+  //     if (pointerLetter === wordList[pointer].length - 1) {
+  //       pointerLetter = 0;
+  //       pointer++;
+  //     } else {
+  //       pointerLetter++;
+  //     }
+  //     wipeBoard();
+  //   });
+  // }
 
-      if (pointerLetter === wordList[pointer].length - 1) {
-        pointerLetter = 0;
-        pointer++;
-      } else {
-        pointerLetter++;
-      }
-      wipeBoard();
-    });
+  // console.log(res.data);
+  //       const text = res.data.prediction;
+  //       let char = wordList[pointer].split("")[pointerLetter];
+  //       if (text.toLowerCase().trim() === char.toLowerCase().trim()) {
+  //         correct++;
+  //       } else {
+  //         wrong++;
+  //       }
+  //       if (pointerLetter === wordList[pointer].length - 1) {
+  //         pointerLetter = 0;
+  //         pointer++;
+  //       } else {
+  //         pointerLetter++;
+  //       }
+  //       wipeBoard();
+  function checkLetter() {
+    const img = convertCanvasToImage();
+    fetch("http://192.168.113.173:5000/ocr", {
+      method: "post",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        image: img.src,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        const text = res.prediction;
+        let char = wordList[pointer].split("")[pointerLetter];
+        if (text.toLowerCase().trim() === char.toLowerCase().trim()) {
+          correct++;
+        } else {
+          wrong++;
+        }
+        if (pointerLetter === wordList[pointer].length - 1) {
+          pointerLetter = 0;
+          pointer++;
+        } else {
+          pointerLetter++;
+        }
+        wipeBoard();
+      });
   }
   const wipeBoard = () => {
-    console.log("Super retarted");
+    //console.log("Super retarted");
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.beginPath();
-    ctx.fillStyle = "#edeae6";
   };
   const handleClick = (e) => {
     let ctx = e.target.getContext("2d");
+    ctx.lineWidth = 20;
     //ctx.beginPath();
     m.x = e.clientX - e.target.offsetLeft;
     m.y = e.clientY - e.target.offsetTop;
     m.pos = "s";
+    ctx.fillStyle = "white";
     console.log("Click");
     draw = true;
     ctx.beginPath();
@@ -71,6 +119,7 @@
   };
   const handleDrag = (e) => {
     console.log("MODE", mode);
+
     let ctx = e.target.getContext("2d");
     m.x = e.clientX - e.target.offsetLeft;
     m.y = e.clientY - e.target.offsetTop;
@@ -101,6 +150,7 @@
   <div class="flex items-center justify-center col-span-2">
     <div class="bg-white rounded-xl">
       <canvas
+        class=""
         bind:this={canvas}
         on:mousemove={(e) => handleDrag(e)}
         on:mousedown={(e) => handleClick(e)}

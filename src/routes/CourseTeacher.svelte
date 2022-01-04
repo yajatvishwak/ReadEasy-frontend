@@ -4,7 +4,7 @@
   import Card from "./Card.svelte";
   let courses = [{ id: -1, title: "test course" }];
   onMount(() => {
-    fetch("http://localhost:5000/getallcourse", {
+    fetch("http://192.168.113.173:5000/getallcourse", {
       method: "GET",
     })
       .then(function (res) {
